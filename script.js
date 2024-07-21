@@ -1,15 +1,16 @@
 'use strict';
 
-var score, roundscore, activePlayer;
+let score, roundscore, activePlayer, gamePlaying;
 
 init();
 
 
  document.querySelector('.btn--roll').addEventListener('click', function() {
-        
-        var dice = Math.trunc(Math.random() * 6) + 1;
+      if (gamePlaying) {
+    
+    const dice = Math.trunc(Math.random() * 6) + 1;
 
-    var diceDOM = document.querySelector('.dice');
+    const diceDOM = document.querySelector('.dice');
 
     diceDOM.style.display = 'block';
     diceDOM.src = './image/dice-' + dice + '.png';
@@ -22,30 +23,32 @@ init();
     else {
       nextPlayer();
     }  
-
-    
+      } 
 
     });
+    
 
 
     document.querySelector('.btn--hold').addEventListener('click', function() {
-
+        if (gamePlaying) {
+        
         score[activePlayer] += roundscore;
         document.querySelector('#score--' + activePlayer).textContent =score[activePlayer]
 
-        if (score[activePlayer] >= 20) {
+        if (score[activePlayer] >= 100) {
             document.querySelector('#name--' + activePlayer).textcontent= 'player--winner';
             document.querySelector('.dice').style.display = 'none';
             document.querySelector('.player--' + activePlayer).classList.add('player--winner');
-            document.querySelector('.player--' + activePlayer).classList.remove('reset');
+            document.querySelector('.player--' + activePlayer).classList.remove('player-winner');
+            gamePlaying =false;
         
         }
         else {
            nextPlayer();
         }
 
-          nextPlayer();
-    
+        }
+        
     });
 
    
@@ -71,6 +74,7 @@ init();
         score = [0,0];
         roundscore =0;
         activePlayer = 0;
+        gamePlaying = true;
 
         document.querySelector('.dice').style.display = 'none';
 
@@ -80,12 +84,11 @@ init();
         document.getElementById('current--1').textContent = '0';
         
 
-        document.querySelector('.player--0').classList.remove('winner');
-        document.querySelector('.player--1').classList.remove('winner');
+        document.querySelector('.player--0').classList.remove('player--winner');
+        document.querySelector('.player--1').classList.remove('player--winner');
         document.querySelector('.player--0').classList.remove('player--active');
         document.querySelector('.player--1').classList.remove('player--active');
-        document.querySelector('.player--0').classList.add('player--active');
-        
+        document.querySelector('.player--0').classList.add('player--active');   
 
     }
 
